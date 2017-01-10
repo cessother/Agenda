@@ -7,6 +7,3 @@
 phpinfo();
 
 // test2
-
-//njkniunjkn
-
