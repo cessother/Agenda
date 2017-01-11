@@ -1,0 +1,30 @@
+Feuille de route :
+
+Sprint Priorité 1
+
+1. Occupez-vous de la classe Agenda/back-end/evenements/evenements.class.php [Poids : 5]
+
+2. Codez le contrôleur Agenda/back-end/evenements/controller.php [Poids : 5]. (Astuces : n'hésitez pas à utiliser var_dump(), print_r() et echo dans le contrôleur avant de passer aux vues)
+Commencez par coder le plus simple des cas : lister touts les événements pour charger la vue "all.php"
+Continuez étapes par étapes...
+
+Doit vous permettre de mettre au point le modèle (evenements.class.php)
+
+3. Codez la vue all.php (c'est celle qui doit afficher tous les événements de votre table plus les liens permettant l'ajout, la modification et la suppression des événements)...
+Assurez vous que le contrôleur comprenne bien ce que vous lui demandez en affichant au besoin les informations avant de les exécuter.
+
+4. Codez la ou les vues permettant ajout et modification des événements (<form>)
+
+Testez : ajouter, modifier, supprimer à tour de bras pour être sûr que tout fonctionne
+
+[ Astuce : le stockage des dates dans une table se fait sous la forme YYYY-MM-DD
+Récupération dans $_POST["date_debut"] => 26-12-2016 / Convertir pour passer au format US
+
+$dateParts = explode("-",$dateFr);
+$usDate = $dateParts[2] . "-" .$dateParts[1] . "-" . $dateParts[0];
+
+Priorité 2 :
+
+5. Contrôleur du front-end (var_dump, print_r, echo)... 
+
+6. La vue, elle est déjà faite, plus ou moins... elle doit être validée et surtout le menu (<nav></nav>) doit être cohérent par rapport aux données affichées.
