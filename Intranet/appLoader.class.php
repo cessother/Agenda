@@ -1,50 +1,86 @@
 <?php
 /**
- * 
- * @author cecile
- *@name appLoader.class.php
- */
-
+ * @name appLoader.class.php
+* 	Services de chargement des applications
+* 	Intègre la méthode autoload pour le chargement automatique des classes
+* @author webdev - 2016 - 2017
+* @package \
+* @version 1.0
+**/
 class appLoader {
+	
+	private static $racine;
+	/**
+	 * Instancie un nouvel objet de chargement d'application
+	 **/
 	public function __construct(){
-		#begin_debug
-		#echo "Script en cours d'execution :" . $_SERVER["PHP_SELF"]."<br />";
-		#end_debug
-		//Fonction qui definit l'autoloader de classes
+	
 		spl_autoload_register(array(__CLASS__,"autoload"));
 	}
+
 	/**
-	 * methode statique qui sera appelée automatiquement lors de l'instanciation de la classe
+	 * Méthode de chargement automatique des classes
+	 * @param string $className
 	 */
 	public static function autoload($className){
-		
-		#begin_debug
-		#echo "on charge la classe :" .$className."<br />";
-		#end_debug
-		
-		//1.on cherche la classe a partir du dossier "classes" de notre appli
-		//la methode searchclass retourne le chemin complet ou faux si
-		//la classe n'a pas pu ê trouvée à partir du dossier spécifié
-		$fullClassPath = self::searchClass("/Classes", $className);
-		
-		//2. c'est pas dans "classes", on va parcourir tous les dossier
-		$fullClassPath = self::searchClass("/", $className);
+		self::$racine = $_SERVER["DOCUMENT_ROOT"]."/Agenda/Intranet";
+		//1. On cherche d'abord dans le dossier Classes de l'application
+		//echo "Dossier racine :".$_SERVER["DOCUMENT_ROOT"]. "<br />";
+		$cheminCompletClasse = self::chercherClasse(self::$racine."/Classes/",$className);
+
+		if(!$cheminCompletClasse){
+			$cheminCompletClasse = self::chercherClasse(self::$racine."/",$className);
+		}
+
+		if($cheminCompletClasse){
+			require_once($cheminCompletClasse);
+			return true;
+		}
+
+		throw new Exception("Impossible de trouver la classe " . $className, -100001);
+		return false;
 	}
-	private static function searchClass($dossier, $className){
-		$listeFichiers = new \DirectoryIterator($dossier);
-		
-		foreach($listeFichiers as $fichier){
-			// ne pas traiter les dossier . et ..
-			if($fichier->isDot()){
-				continue;//
+
+	private static function chercherClasse($dossier, $className){
+		// \DirectoryIterator retourne la liste des dossiers et des fichiers du dossier $dossier
+		$listeFichier = new \DirectoryIterator($dossier);
+
+		foreach($listeFichier as $element){
+			if($element->isDot()){
+				#begin_debug
+				#echo "dans le dossier :".$dossier."on a un dossier \".\" ou\"..\"<br />";
+				#end_debug
+				continue; // Revient à l'instruction foreach sans exécuter tout le reste
 			}
-			if($fichier->isDir()){ // si c'est un dossier
-				if(substr($fichier->getFileName(),0,1)=="_"){
+				
+			if($element->isDir()){
+				// L'élément lu est un dossier, on vérifie le dossier commence par "_"
+				if(substr($element->getFilename(),0,1) == "_"){
 					continue;
 				}
-				
-				if($resultat = self::searchClass($dossier . $fichier->getFilename(), $className))
+
+				// Il s'agit d'un dossier, on va entrer dans ce nouveau dossier pour le parcourir à son tour
+				if($resultat = self::chercherClasse($dossier . $element->getFilename() . "/", $className)){
+					#begin_debug
+					#echo "Dossier :".$dossier . $element->getFilename()."<br />";
+					#end_debug
+					// On a donc trouvé dans ce nouveau dossier ce qu'on cherche...
+					return $resultat; // On sort de la boucle itérative avec le chemin complet à charger
+					echo "chemin:".$resultat;
+				} else {
+					continue; // On passe à l'élément suivant
+				}
+			} else {
+				// Il s'agit donc d'un fichier...
+				if($element->getFileName() == $className . ".class.php"
+						|| $element->getFileName() == $className . ".php"
+						|| $element->getFileName() == "class." . $className . ".php"){
+							// Et il s'agit bien de celui qu'on recherche
+							return $dossier . $element->getFilename();
+							
+				}
 			}
 		}
+		return false; // Le fichier demandé n'a pas pu être trouvé...
 	}
 }

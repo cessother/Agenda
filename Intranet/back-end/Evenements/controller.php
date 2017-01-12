@@ -11,9 +11,10 @@
  * charger la classe de chargement des autres calsses
  * autoloader
 **/
-require_once(dirname(__FILE__) ."/../../appLoader.class.php");
+require_once((__DIR__) ."/../../appLoader.class.php"); // require de la classe 
+// (__DIR__) remplace "dirname(__FILE__)".
 
-$appLoader = new appLoader();
+$appLoader = new appLoader(); //appel de la classe
 /**
  * 1. Importer les classes nécessaires pour le fonctionnement du contrôleur
 **/
@@ -21,7 +22,7 @@ ini_set("display_errors",true);
 error_reporting(E_ALL);
 
 //require_once("modele/evenements.class.php"); // ORM faisant la relation entre le backend et la table evenements
-require_once("../../Classes/Helper/dateHelper.class.php");
+//require_once("/../../Classes/Helper/dateHelper.class.php");
 
 # Test de la méthode statique toFrDate()
 #echo dateHelper::toFrDate("2016-12-23","d-m-Y", true);

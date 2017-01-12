@@ -7,19 +7,7 @@
 /**
 * Requiert le fichier qui contient les constantes d'informations de connexion
 **/
-if(file_exists("../../_const")){
-	require("../../_const/dbConfig.class.php");
-	require("../../Classes/Database/Connexion.class.php");
-	require("../../Classes/Database/MySQL.class.php");
-	require("../../Classes/Database/PostgreSQL.class.php");
-	require("../../Classes/Database/Oracle.class.php");
-} else {
-	require("../../../_const/dbConfig.class.php");
-	require("../../../Classes/Database/Connexion.class.php");
-	require("../../../Classes/Database/MySQL.class.php");
-	require("../../../Classes/Database/PostgreSQL.class.php");
-	require("../../../Classes/Database/Oracle.class.php");
-}
+
 	
 
 

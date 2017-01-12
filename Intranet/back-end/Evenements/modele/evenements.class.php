@@ -12,15 +12,6 @@
 * @see Intranet/Modele/civilite.class.php
 **/
 
-if(file_exists("../../Classes")){
-	require_once("../../Classes/Database/dbConnect.class.php");
-	require_once("../../Classes/Database/Modele.class.php");
-	require_once("../../Classes/Helper/dateHelper.class.php");
-} else {
-	require_once("../../../Classes/Database/dbConnect.class.php");
-	require_once("../../../Classes/Database/Modele.class.php");
-	require_once("../../../Classes/Helper/dateHelper.class.php");
-}
 
 class evenements extends Modele{
 	/**
